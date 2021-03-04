@@ -1,16 +1,19 @@
-# build environment
-FROM node:13.12.0-alpine as builder
+# set the base image
+FROM node:alpine as build
 WORKDIR /app
+COPY . /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci --silent
-RUN npm install react-scripts@3.4.1 -g --silent
-COPY . ./
-RUN npm run build
+RUN yarn
+RUN yarn build
 
-# production environment
-FROM nginx:stable-alpine
-COPY --from=builder /app/build /usr/share/nginx/html
+# set up production environment
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+# --------- only for those using react router ----------
+# if you are using react router 
+# you need to overwrite the default nginx configurations
+# remove default nginx configuration file
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]   
+CMD ["nginx", "-g", "daemon off;"]
