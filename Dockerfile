@@ -1,5 +1,7 @@
 # start with node  base image
 FROM node:10.16.3
+
+# Create an app directory (in the Docker container)
 RUN mkdir -p /app
 COPY . /app
 
@@ -12,4 +14,4 @@ RUN npm run build
 EXPOSE 8080
 
 # Finally start the container command
-CMD ["serve", "-d", "build"]
+CMD ["npm", "run", "start"]
