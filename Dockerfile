@@ -1,18 +1,15 @@
-
-# set the base image
-FROM node:alpine as build
-WORKDIR /app
+# start with node  base image
+FROM node:10.16.3
+RUN mkdir -p /app
 COPY . /app
-ENV PATH /app/node_modules/.bin:$PATH
-RUN yarn
-RUN yarn build
 
-# set up production environment
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-# --------- only for those using react router ----------
-# if you are using react router 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+
+# install dependencies
+RUN npm install --silent
+RUN npm run build
+# expose it from Docker container
+EXPOSE 8080
+
+# Finally start the container command
+CMD ["serve", "-s", "build"]
