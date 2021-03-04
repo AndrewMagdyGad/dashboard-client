@@ -12,4 +12,4 @@ RUN npm run build
 EXPOSE 8080
 
 # Finally start the container command
-CMD ["serve", "-s", "build"]
+CMD ["serve", "-d", "build"]
