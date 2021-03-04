@@ -26,7 +26,7 @@ function App() {
     return (
         <>
             <CssBaseline />
-            <Container maxWidth="lg">
+            <Container maxWidth="md">
                 <Dashboard setSnackbar={setSnackbar} />
             </Container>
             <GenericSnackbar
