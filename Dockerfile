@@ -14,4 +14,4 @@ RUN npm run build
 EXPOSE 8080
 
 # Finally start the container command
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "build"]
